@@ -13,6 +13,8 @@ Available for Windows, macOS, and Linux.
 </div>
 <br/>
 
+![Multi-Stoat screenshot showing two instances (Revolt and Self-Hosted) as tabs in the sidebar](image.png)
+
 ## What's different from the original?
 
 Multi-Stoat extends the official Stoat desktop client with the ability to connect to **multiple Revolt/Stoat instances simultaneously** — useful for users who operate or participate in self-hosted servers alongside the main Stoat network.
