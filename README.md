@@ -24,9 +24,8 @@ Multi-Stoat extends the official Stoat desktop client with the ability to connec
 | Connect to stoat.chat | ✅ | ✅ |
 | Connect to self-hosted instances | ❌ | ✅ |
 | Multiple instances at once | ❌ | ✅ |
-| Switch instances via sidebar tabs | ❌ | ✅ |
+| Switch instances via tabs | ❌ | ✅ |
 | Instance manager (add/edit/remove) | ❌ | ✅ |
-| Custom sidebar / title bar | ❌ | ✅ |
 | All original features (tray, RPC, …) | ✅ | ✅ |
 
 ### Multi-instance sidebar
@@ -36,6 +35,40 @@ A custom title bar replaces the native window frame. It shows one tab per config
 ### Instance manager
 
 An in-app dialog lets you add, rename, and remove instances at any time. Each instance stores a **label** and a **URL** pointing to the Revolt-compatible frontend of your choice.
+
+---
+
+## Usage
+
+### Switching between instances
+
+Once you have more than one instance configured, tabs appear in the title bar — one per instance.
+
+- **Click** a tab to switch to that instance
+- **`Ctrl+1` – `Ctrl+9`** keyboard shortcuts switch directly to the first nine instances
+- The active tab is highlighted; each tab shows the instance label
+
+### Managing instances
+
+Open the instance manager via any of these methods:
+
+- Click the **`+`** button in the title bar
+- **Right-click** any existing tab
+
+Inside the instance manager you can:
+
+| Action | How |
+|---|---|
+| **Add** a new instance | Click „Add New", enter a label and URL, click „Save" |
+| **Edit** an existing instance | Click the ✎ button next to it, adjust, click „Save" |
+| **Remove** an instance | Click the ✕ button next to it and confirm |
+
+The **URL** must point to a Revolt-compatible web frontend, for example:
+- `https://app.revolt.chat` — official Revolt
+- `https://beta.revolt.chat` — Revolt beta
+- `https://your-selfhosted.example.com` — any self-hosted instance
+
+> The protocol (`https://`) is added automatically if you leave it out.
 
 ---
 
