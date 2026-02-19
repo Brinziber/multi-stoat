@@ -7,7 +7,11 @@ import { autoLaunch } from "./native/autoLaunch";
 import { config } from "./native/config";
 import { initDiscordRpc } from "./native/discordRpc";
 import { initTray } from "./native/tray";
-import { BUILD_URL, createMainWindow, mainWindow } from "./native/window";
+import {
+  createMainWindow,
+  mainWindow,
+  webContentsOriginMap,
+} from "./native/window";
 
 // Squirrel-specific logic
 // create/remove shortcuts on Windows when installing / uninstalling
@@ -87,9 +91,10 @@ if (acquiredLock) {
 
   // ensure URLs launch in external context
   app.on("web-contents-created", (_, contents) => {
-    // prevent navigation out of build URL origin
+    // prevent navigation out of the instance's origin
     contents.on("will-navigate", (event, navigationUrl) => {
-      if (new URL(navigationUrl).origin !== BUILD_URL.origin) {
+      const allowedOrigin = webContentsOriginMap.get(contents.id);
+      if (allowedOrigin && new URL(navigationUrl).origin !== allowedOrigin) {
         event.preventDefault();
       }
     });

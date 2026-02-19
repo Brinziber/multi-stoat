@@ -4,7 +4,13 @@ import trayIconAsset from "../../assets/desktop/icon.png?asset";
 import macOsTrayIconAsset from "../../assets/desktop/iconTemplate.png?asset";
 import { version } from "../../package.json";
 
-import { mainWindow, quitApp } from "./window";
+import { config } from "./config";
+import {
+  mainWindow,
+  openInstanceManager,
+  quitApp,
+  switchToInstance,
+} from "./window";
 
 // internal tray state
 let tray: Tray = null;
@@ -29,15 +35,28 @@ export function initTray() {
   tray.setImage(trayIcon);
   tray.on("click", () => {
     if (mainWindow.isVisible()) {
-     mainWindow.hide();
+      mainWindow.hide();
     } else {
-     mainWindow.show();
-     mainWindow.focus();
+      mainWindow.show();
+      mainWindow.focus();
     }
   });
 }
 
 export function updateTrayMenu() {
+  const instances = config.instances;
+  const activeId = config.activeInstanceId;
+
+  const instanceMenuItems = instances.map((instance) => ({
+    label: `${instance.id === activeId ? "● " : "  "}${instance.label}`,
+    type: "normal" as const,
+    click() {
+      switchToInstance(instance.id);
+      mainWindow.show();
+      mainWindow.focus();
+    },
+  }));
+
   tray.setContextMenu(
     Menu.buildFromTemplate([
       { label: "Stoat for Desktop", type: "normal", enabled: false },
@@ -51,6 +70,13 @@ export function updateTrayMenu() {
             enabled: false,
           },
         ]),
+      },
+      { type: "separator" },
+      ...instanceMenuItems,
+      {
+        label: "Manage Instances...",
+        type: "normal",
+        click: openInstanceManager,
       },
       { type: "separator" },
       {

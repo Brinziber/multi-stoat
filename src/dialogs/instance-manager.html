@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Manage Instances</title>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Instances</h2>
+      <div class="instance-list" id="instance-list"></div>
+      <div class="add-form" id="add-form">
+        <h3 id="form-title">Add Instance</h3>
+        <div class="field">
+          <label for="label-input">Label</label>
+          <input type="text" id="label-input" placeholder="My Server" />
+        </div>
+        <div class="field">
+          <label for="url-input">URL</label>
+          <input type="url" id="url-input" placeholder="https://example.com" />
+        </div>
+        <div class="form-actions">
+          <button class="btn secondary" id="cancel-btn">Cancel</button>
+          <button class="btn primary" id="save-btn">Save</button>
+        </div>
+      </div>
+      <button class="btn add" id="add-new-btn">+ Add Instance</button>
+    </div>
+    <script type="module" src="./instance-manager.ts"></script>
+  </body>
+</html>

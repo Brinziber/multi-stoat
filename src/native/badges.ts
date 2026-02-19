@@ -8,6 +8,18 @@ import { mainWindow } from "./window";
 const nativeIcons: Record<number, NativeImage> = {};
 let sessionBus: dbus.MessageBus | null;
 
+// Badge counts per webContents ID
+const badgeCounts = new Map<number, number>();
+
+function getTotalBadgeCount(): number {
+  let total = 0;
+  for (const count of badgeCounts.values()) {
+    if (count === -1) return -1; // unread indicator
+    total += count;
+  }
+  return total;
+}
+
 export async function setBadgeCount(count: number) {
   switch (process.platform) {
     case "win32":
@@ -66,4 +78,8 @@ export async function setBadgeCount(count: number) {
   }
 }
 
-ipcMain.on("setBadgeCount", (_event, count: number) => setBadgeCount(count));
+ipcMain.on("setBadgeCount", (event, count: number) => {
+  badgeCounts.set(event.sender.id, count);
+  const total = getTotalBadgeCount();
+  setBadgeCount(total);
+});

@@ -1,0 +1,158 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: #1a1a1a;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  width: 100%;
+  overflow: hidden;
+  user-select: none;
+}
+
+.titlebar {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  /* No drag on container — only on .spacer below */
+  padding-left: 8px;
+}
+
+/* macOS: leave room for the traffic-light buttons (~74px) */
+body.mac .titlebar {
+  padding-left: 80px;
+}
+
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 100%;
+  -webkit-app-region: no-drag;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-shrink: 1;
+  min-width: 0;
+  pointer-events: all;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  height: 100%;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  color: #8e9297;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s ease, color 0.12s ease;
+  flex-shrink: 0;
+  -webkit-app-region: no-drag;
+  pointer-events: all;
+}
+
+.tab:hover {
+  background: #2d2d2d;
+  color: #dcddde;
+}
+
+.tab.active {
+  background: #2d2d2d;
+  color: #fff;
+  font-weight: 600;
+}
+
+.tab .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  font-size: 0;
+  flex-shrink: 0;
+}
+
+.tab .shortcut {
+  font-size: 10px;
+  color: #5e6066;
+  margin-left: 2px;
+}
+
+.spacer {
+  flex: 1;
+  height: 100%;
+  -webkit-app-region: drag;
+}
+
+.tab-btn {
+  -webkit-app-region: no-drag;
+  pointer-events: all;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: #8e9297;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s ease, color 0.12s ease;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.tab-btn:hover {
+  background: #2d2d2d;
+  color: #3ba55c;
+}
+
+.window-controls {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  -webkit-app-region: no-drag;
+  pointer-events: all;
+}
+
+.win-btn {
+  width: 46px;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: #b9bbbe;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s ease;
+  -webkit-app-region: no-drag;
+  pointer-events: all;
+}
+
+.win-btn:hover {
+  background: #3d3d3d;
+}
+
+.win-btn.close:hover {
+  background: #ed4245;
+  color: #fff;
+}

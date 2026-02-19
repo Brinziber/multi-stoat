@@ -13,10 +13,10 @@ import { FuseV1Options, FuseVersion } from "@electron/fuses";
 // import { globSync } from "node:fs";
 
 const STRINGS = {
-  author: "Revolt Platforms LTD",
-  name: "Stoat",
-  execName: "stoat-desktop",
-  description: "Open source user-first chat platform.",
+  author: "Brinziber",
+  name: "Multi-Stoat",
+  execName: "multi-stoat",
+  description: "Open source user-first chat platform (Multi-Stoat fork).",
 };
 
 const ASSET_DIR = "assets/desktop";
@@ -35,7 +35,7 @@ const makers: ForgeConfig["makers"] = [
     description: STRINGS.description,
     exe: `${STRINGS.execName}.exe`,
     setupExe: `${STRINGS.execName}-setup.exe`,
-    copyright: "Copyright (C) 2025 Revolt Platforms LTD",
+    copyright: "Copyright (C) 2026 Brinziber",
   }),
   new MakerZIP({}),
 ];
@@ -54,7 +54,7 @@ if (!process.env.PLATFORM) {
     // this is just for testing purposes
     new MakerFlatpak({
       options: {
-        id: "chat.stoat.stoat-desktop",
+        id: "io.github.brinziber.multi-stoat",
         description: STRINGS.description,
         productName: STRINGS.name,
         productDescription: STRINGS.description,
@@ -158,8 +158,27 @@ const config: ForgeConfig = {
           config: "vite.preload.config.ts",
           target: "preload",
         },
+        {
+          entry: "src/sidebar/sidebar-preload.ts",
+          config: "vite.preload.config.ts",
+          target: "preload",
+        },
+        {
+          entry: "src/dialogs/instance-preload.ts",
+          config: "vite.preload.config.ts",
+          target: "preload",
+        },
       ],
-      renderer: [],
+      renderer: [
+        {
+          name: "sidebar",
+          config: "vite.sidebar.config.ts",
+        },
+        {
+          name: "instance_manager",
+          config: "vite.dialog.config.ts",
+        },
+      ],
     }),
     // Fuses are used to enable/disable various Electron functionality
     // at package time, before code signing the application
@@ -176,8 +195,8 @@ const config: ForgeConfig = {
   publishers: [
     new PublisherGithub({
       repository: {
-        owner: "stoatchat",
-        name: "for-desktop",
+        owner: "Brinziber",
+        name: "multi-stoat",
       },
     }),
   ],

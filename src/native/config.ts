@@ -4,7 +4,12 @@ import { ipcMain } from "electron";
 import Store from "electron-store";
 
 import { destroyDiscordRpc, initDiscordRpc } from "./discordRpc";
-import { mainWindow } from "./window";
+import {
+  getInstanceManagerWindow,
+  getInstanceViews,
+  getSidebarView,
+  mainWindow,
+} from "./window";
 
 const schema = {
   firstLaunch: {
@@ -28,6 +33,20 @@ const schema = {
   discordRpc: {
     type: "boolean",
   } as JSONSchema.Boolean,
+  instances: {
+    type: "array",
+    items: {
+      type: "object",
+      properties: {
+        id: { type: "string" } as JSONSchema.String,
+        label: { type: "string" } as JSONSchema.String,
+        url: { type: "string" } as JSONSchema.String,
+      },
+    },
+  } as JSONSchema.Array,
+  activeInstanceId: {
+    type: "string",
+  } as JSONSchema.String,
   windowState: {
     type: "object",
     properties: {
@@ -50,6 +69,10 @@ const schema = {
   } as JSONSchema.Object,
 };
 
+const DEFAULT_INSTANCES: Instance[] = [
+  { id: "default", label: "Revolt", url: "https://beta.revolt.chat" },
+];
+
 const store = new Store({
   schema,
   defaults: {
@@ -60,6 +83,8 @@ const store = new Store({
     spellchecker: true,
     hardwareAcceleration: true,
     discordRpc: true,
+    instances: DEFAULT_INSTANCES,
+    activeInstanceId: "default",
     windowState: {
       x: 0,
       y: 0,
@@ -75,7 +100,7 @@ const store = new Store({
  */
 class Config {
   sync() {
-    mainWindow.webContents.send("config", {
+    const data = {
       firstLaunch: this.firstLaunch,
       customFrame: this.customFrame,
       minimiseToTray: this.minimiseToTray,
@@ -83,8 +108,42 @@ class Config {
       spellchecker: this.spellchecker,
       hardwareAcceleration: this.hardwareAcceleration,
       discordRpc: this.discordRpc,
+      instances: this.instances,
+      activeInstanceId: this.activeInstanceId,
       windowState: this.windowState,
-    });
+    };
+
+    // Send config to all instance views
+    for (const view of getInstanceViews().values()) {
+      try {
+        view.webContents.send("config", data);
+      } catch {
+        // view may have been destroyed
+      }
+    }
+
+    // Also send to sidebar
+    try {
+      getSidebarView()?.webContents.send("instances-changed", {
+        instances: this.instances,
+        activeInstanceId: this.activeInstanceId,
+      });
+    } catch {
+      // sidebar may not exist yet
+    }
+
+    // Also send to instance manager window if open
+    try {
+      const mgr = getInstanceManagerWindow();
+      if (mgr && !mgr.isDestroyed()) {
+        mgr.webContents.send("instances-changed", {
+          instances: this.instances,
+          activeInstanceId: this.activeInstanceId,
+        });
+      }
+    } catch {
+      // instance manager may not exist
+    }
   }
 
   get firstLaunch() {
@@ -148,7 +207,14 @@ class Config {
   }
 
   set spellchecker(value: boolean) {
-    mainWindow.webContents.session.setSpellCheckerEnabled(value);
+    // Enable/disable spellchecker on all instance views
+    for (const view of getInstanceViews().values()) {
+      try {
+        view.webContents.session.setSpellCheckerEnabled(value);
+      } catch {
+        // view may have been destroyed
+      }
+    }
 
     (store as never as { set(k: string, value: boolean): void }).set(
       "spellchecker",
@@ -186,6 +252,34 @@ class Config {
 
     (store as never as { set(k: string, value: boolean): void }).set(
       "discordRpc",
+      value,
+    );
+
+    this.sync();
+  }
+
+  get instances(): Instance[] {
+    return (store as never as { get(k: string): Instance[] }).get("instances");
+  }
+
+  set instances(value: Instance[]) {
+    (store as never as { set(k: string, value: Instance[]): void }).set(
+      "instances",
+      value,
+    );
+
+    this.sync();
+  }
+
+  get activeInstanceId(): string {
+    return (store as never as { get(k: string): string }).get(
+      "activeInstanceId",
+    );
+  }
+
+  set activeInstanceId(value: string) {
+    (store as never as { set(k: string, value: string): void }).set(
+      "activeInstanceId",
       value,
     );
 
