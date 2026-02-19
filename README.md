@@ -41,15 +41,33 @@ An in-app dialog lets you add, rename, and remove instances at any time. Each in
 
 ## Installation
 
-> Pre-built binaries are not yet published. Build from source using the instructions below.
+### Pre-built binaries (recommended)
 
-### Requirements
+Download the latest release from the [Releases page](https://github.com/Brinziber/multi-stoat/releases/latest).
+
+| Platform | File | Notes |
+|---|---|---|
+| **Linux** (Debian/Ubuntu) | `multi-stoat_*_amd64.deb` | Install via `sudo dpkg -i multi-stoat_*.deb` |
+| **Linux** (ARM64) | `multi-stoat_*_arm64.deb` | For Raspberry Pi 4/5 and ARM boards |
+| **Linux** (any) | `multi-stoat-linux-*.zip` | Extract and run the `multi-stoat` binary |
+| **Windows** | `multi-stoat-setup.exe` | Standard installer wizard |
+| **Windows** (portable) | `multi-stoat-win32-*.zip` | Extract and run `multi-stoat.exe` |
+| **macOS** (Apple Silicon) | `multi-stoat-darwin-arm64-*.zip` | Extract and move to Applications |
+| **macOS** (Intel) | `multi-stoat-darwin-x64-*.zip` | Extract and move to Applications |
+
+> **macOS note:** The app is not notarized. On first launch, right-click the app → **Open** to bypass Gatekeeper.
+
+> **Linux note:** If the app does not launch after installing the `.deb`, make sure `libnotify` and `libgconf` are installed on your system.
+
+---
+
+### Build from source
+
+#### Requirements
 
 - [Git](https://git-scm.com/)
 - [Node.js](https://nodejs.org/) (LTS recommended)
 - [pnpm](https://pnpm.io/) — enable via `corepack enable`
-
-### Build from source
 
 ```bash
 # Clone this repository (including assets submodule)
