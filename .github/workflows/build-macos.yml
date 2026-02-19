@@ -1,0 +1,70 @@
+name: Build macOS (test)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-macos:
+    name: Build macOS App
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout assets
+        run: git -c submodule."assets".update=checkout submodule update --init assets
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Generate .icns icon
+        run: |
+          mkdir -p assets/desktop/icon.iconset
+          sips -z 16 16   assets/desktop/hicolor/16x16.png   --out assets/desktop/icon.iconset/icon_16x16.png
+          sips -z 32 32   assets/desktop/hicolor/32x32.png   --out assets/desktop/icon.iconset/icon_16x16@2x.png
+          sips -z 32 32   assets/desktop/hicolor/32x32.png   --out assets/desktop/icon.iconset/icon_32x32.png
+          sips -z 64 64   assets/desktop/hicolor/64x64.png   --out assets/desktop/icon.iconset/icon_32x32@2x.png
+          sips -z 128 128 assets/desktop/hicolor/128x128.png --out assets/desktop/icon.iconset/icon_128x128.png
+          sips -z 256 256 assets/desktop/hicolor/256x256.png --out assets/desktop/icon.iconset/icon_128x128@2x.png
+          sips -z 256 256 assets/desktop/hicolor/256x256.png --out assets/desktop/icon.iconset/icon_256x256.png
+          sips -z 512 512 assets/desktop/hicolor/512x512.png --out assets/desktop/icon.iconset/icon_256x256@2x.png
+          sips -z 512 512 assets/desktop/hicolor/512x512.png --out assets/desktop/icon.iconset/icon_512x512.png
+          iconutil -c icns assets/desktop/icon.iconset -o assets/desktop/icon.icns
+          echo "Generated icon.icns:"
+          file assets/desktop/icon.icns
+
+      - name: Build (arm64)
+        run: pnpm run package
+        env:
+          PLATFORM: macos-latest
+
+      - name: Build (x64)
+        run: pnpm run package --arch=x64
+        env:
+          PLATFORM: macos-latest
+
+      - name: Upload arm64 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Multi-Stoat-macos-arm64
+          path: out/*-darwin-arm64/
+          retention-days: 7
+
+      - name: Upload x64 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Multi-Stoat-macos-x64
+          path: out/*-darwin-x64/
+          retention-days: 7
