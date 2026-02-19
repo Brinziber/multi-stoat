@@ -1,84 +1,103 @@
 <div align="center">
 <h1>
-  Stoat for Desktop
-  
-  [![Stars](https://img.shields.io/github/stars/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/stargazers)
-  [![Forks](https://img.shields.io/github/forks/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/network/members)
-  [![Pull Requests](https://img.shields.io/github/issues-pr/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/pulls)
-  [![Issues](https://img.shields.io/github/issues/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/issues)
-  [![Contributors](https://img.shields.io/github/contributors/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/graphs/contributors)
-  [![License](https://img.shields.io/github/license/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/blob/main/LICENSE)
+  Multi-Stoat
+
+  [![Stars](https://img.shields.io/github/stars/Brinziber/multi-stoat?style=flat-square&logoColor=white)](https://github.com/Brinziber/multi-stoat/stargazers)
+  [![Forks](https://img.shields.io/github/forks/Brinziber/multi-stoat?style=flat-square&logoColor=white)](https://github.com/Brinziber/multi-stoat/network/members)
+  [![Issues](https://img.shields.io/github/issues/Brinziber/multi-stoat?style=flat-square&logoColor=white)](https://github.com/Brinziber/multi-stoat/issues)
+  [![License](https://img.shields.io/github/license/Brinziber/multi-stoat?style=flat-square&logoColor=white)](https://github.com/Brinziber/multi-stoat/blob/main/LICENSE)
 </h1>
-Application for Windows, macOS, and Linux.
+
+A community fork of [stoatchat/for-desktop](https://github.com/stoatchat/for-desktop) with multi-instance support.  
+Available for Windows, macOS, and Linux.
 </div>
 <br/>
 
+## What's different from the original?
+
+Multi-Stoat extends the official Stoat desktop client with the ability to connect to **multiple Revolt/Stoat instances simultaneously** — useful for users who operate or participate in self-hosted servers alongside the main Stoat network.
+
+| Feature | Official Stoat | Multi-Stoat |
+|---|---|---|
+| Connect to stoat.chat | ✅ | ✅ |
+| Connect to self-hosted instances | ❌ | ✅ |
+| Multiple instances at once | ❌ | ✅ |
+| Switch instances via sidebar tabs | ❌ | ✅ |
+| Instance manager (add/edit/remove) | ❌ | ✅ |
+| Custom sidebar / title bar | ❌ | ✅ |
+| All original features (tray, RPC, …) | ✅ | ✅ |
+
+### Multi-instance sidebar
+
+A custom title bar replaces the native window frame. It shows one tab per configured instance and lets you switch between them instantly without opening a new window. Window controls (minimise, maximise, close) are rendered natively per platform.
+
+### Instance manager
+
+An in-app dialog lets you add, rename, and remove instances at any time. Each instance stores a **label** and a **URL** pointing to the Revolt-compatible frontend of your choice.
+
+---
+
 ## Installation
 
-<a href="https://repology.org/project/stoat-desktop/versions">
-    <img src="https://repology.org/badge/vertical-allrepos/stoat-desktop.svg" alt="Packaging status" align="right">
-</a>
+> Pre-built binaries are not yet published. Build from source using the instructions below.
 
-- All downloads and instructions for Stoat can be found on our [Website](https://stoat.chat/download).
+### Requirements
 
-## Development Guide
+- [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/) (LTS recommended)
+- [pnpm](https://pnpm.io/) — enable via `corepack enable`
 
-_Contribution guidelines for Desktop app TBA!_
-
-<!-- Before contributing, make yourself familiar with [our contribution guidelines](https://developers.revolt.chat/contrib.html), the [code style guidelines](./GUIDELINES.md), and the [technical documentation for this project](https://revoltchat.github.io/frontend/). -->
-
-Before getting started, you'll want to install:
-
-- Git
-- Node.js
-- pnpm (run `corepack enable`)
-
-Then proceed to setup:
+### Build from source
 
 ```bash
-# clone the repository
-git clone --recursive https://github.com/stoatchat/for-desktop stoat-for-desktop
-cd stoat-for-desktop
+# Clone this repository (including assets submodule)
+git clone --recursive https://github.com/Brinziber/multi-stoat
+cd multi-stoat
 
-# install all packages
+# Install dependencies
 pnpm i --frozen-lockfile
 
-# start the application
+# Run in development mode
 pnpm start
-# ... or build the bundle
+
+# Build an unpacked bundle
 pnpm package
-# ... or build all distributables
+
+# Build distributable packages (.deb, .zip, Flatpak, …)
 pnpm make
 ```
 
-Various useful commands for development testing:
+### Development helpers
 
 ```bash
-# connect to the development server
+# Point the app at a local Revolt dev server
 pnpm start -- --force-server http://localhost:5173
 
-# test the flatpak (after `make`)
+# Install and run the Flatpak build locally (after `pnpm make`)
 pnpm install:flatpak
 pnpm run:flatpak
-# ... also connect to dev server like so:
+
+# Connect the Flatpak build to a local dev server
 pnpm run:flatpak --force-server http://localhost:5173
 
-# Nix-specific instructions for testing
+# NixOS / Nix users
 pnpm package
 pnpm run:nix
-# ... as before:
 pnpm run:nix --force-server=http://localhost:5173
-# a better solution would be telling
-# Electron Forge where system Electron is
 ```
 
-### Pulling in Stoat's assets
+### Assets submodule
 
-If you want to pull in Stoat brand assets after pulling, run the following:
+Brand assets are tracked as a Git submodule. If they were not cloned automatically, run:
 
 ```bash
-# update the assets
 git -c submodule."assets".update=checkout submodule update --init assets
 ```
 
-Currently, this is required to build, any forks are expected to provide their own assets.
+This is required before building. Forks are expected to supply their own assets.
+
+---
+
+## Upstream
+
+This project is a fork of [stoatchat/for-desktop](https://github.com/stoatchat/for-desktop) and is kept in sync with upstream on a best-effort basis. Changes that are general enough may be proposed back via pull request.
