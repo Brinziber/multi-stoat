@@ -73,7 +73,8 @@ function renderTabs(instances: Instance[], activeInstanceId: string) {
     if (index < 9) {
       const shortcut = document.createElement("span");
       shortcut.className = "shortcut";
-      shortcut.textContent = `Ctrl+${index + 1}`;
+      const modifier = sidebarAPI.platform === "darwin" ? "⌘" : "Ctrl+";
+      shortcut.textContent = `${modifier}${index + 1}`;
       tab.appendChild(shortcut);
     }
 

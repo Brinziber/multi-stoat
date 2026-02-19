@@ -45,7 +45,8 @@ An in-app dialog lets you add, rename, and remove instances at any time. Each in
 Once you have more than one instance configured, tabs appear in the title bar — one per instance.
 
 - **Click** a tab to switch to that instance
-- **`Ctrl+1` – `Ctrl+9`** keyboard shortcuts switch directly to the first nine instances
+- **`Ctrl+1` – `Ctrl+9`** (Windows/Linux) or **`⌘1` – `⌘9`** (macOS) switch directly to the first nine instances
+- **`Ctrl+Tab`** / **`Ctrl+Shift+Tab`** cycle forward/backward through instances on all platforms
 - The active tab is highlighted; each tab shows the instance label
 
 ### Managing instances

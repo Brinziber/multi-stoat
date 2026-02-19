@@ -443,13 +443,15 @@ export function createMainWindow() {
         if (idx < inst.length) switchToInstance(inst[idx].id);
       });
     }
-    globalShortcut.register("CommandOrControl+Tab", () => {
+    // On macOS, Cmd+Tab is reserved by the OS (app switcher) and cannot be
+    // intercepted. Use Ctrl+Tab for tab cycling on all platforms instead.
+    globalShortcut.register("Ctrl+Tab", () => {
       const inst = config.instances;
       if (inst.length <= 1) return;
       const cur = inst.findIndex((i) => i.id === activeInstanceId);
       switchToInstance(inst[(cur + 1) % inst.length].id);
     });
-    globalShortcut.register("CommandOrControl+Shift+Tab", () => {
+    globalShortcut.register("Ctrl+Shift+Tab", () => {
       const inst = config.instances;
       if (inst.length <= 1) return;
       const cur = inst.findIndex((i) => i.id === activeInstanceId);
@@ -460,8 +462,8 @@ export function createMainWindow() {
   function unregisterShortcuts() {
     for (let i = 1; i <= 9; i++)
       globalShortcut.unregister(`CommandOrControl+${i}`);
-    globalShortcut.unregister("CommandOrControl+Tab");
-    globalShortcut.unregister("CommandOrControl+Shift+Tab");
+    globalShortcut.unregister("Ctrl+Tab");
+    globalShortcut.unregister("Ctrl+Shift+Tab");
   }
 
   mainWindow.on("focus", registerShortcuts);
