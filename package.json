@@ -1,7 +1,7 @@
 {
   "name": "multi-stoat",
   "productName": "Multi-Stoat",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "main": ".vite/build/main.js",
   "repository": "Brinziber/multi-stoat",
   "scripts": {

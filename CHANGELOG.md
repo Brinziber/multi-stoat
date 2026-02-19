@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.1](https://github.com/Brinziber/multi-stoat/compare/v1.4.0...v1.4.1) (2026-02-19)
+
+
+### Bug Fixes
+
+* guard updateTrayMenu against null tray on early window events ([2eb0c03](https://github.com/Brinziber/multi-stoat/commit/2eb0c037c281d9bbe11a3695ac4030a93d0d6c7c))
+* use platform-aware shortcut labels and Ctrl+Tab for tab cycling ([34c9a24](https://github.com/Brinziber/multi-stoat/commit/34c9a240ab54c335417455039482490a339e21f2))
+
 ## [1.4.0](https://github.com/Brinziber/multi-stoat/compare/v1.3.0...v1.4.0) (2026-02-19)
 
 
