@@ -44,6 +44,8 @@ export function initTray() {
 }
 
 export function updateTrayMenu() {
+  if (!tray) return;
+
   const instances = config.instances;
   const activeId = config.activeInstanceId;
 
