@@ -10,14 +10,13 @@ permissions:
   pull-requests: write
   id-token: write
 
-concurrency:
-  group: release-please
-  cancel-in-progress: true
-
 jobs:
   release-please:
     name: Release Please
     runs-on: ubuntu-latest
+    concurrency:
+      group: release-please
+      cancel-in-progress: true
     outputs:
       release_created: ${{ steps.rp.outputs.release_created }}
     steps:
