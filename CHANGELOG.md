@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/Brinziber/multi-stoat/compare/v1.4.1...v1.4.2) (2026-02-20)
+
+
+### Bug Fixes
+
+* suppress autoUpdater errors on unsigned macOS builds ([a70e6fc](https://github.com/Brinziber/multi-stoat/commit/a70e6fccf909c4d3fbe796232895136a115f27ca))
+
 ## [1.4.1](https://github.com/Brinziber/multi-stoat/compare/v1.4.0...v1.4.1) (2026-02-19)
 
 
