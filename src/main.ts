@@ -1,6 +1,6 @@
 import { IUpdateInfo, updateElectronApp } from "update-electron-app";
 
-import { BrowserWindow, Notification, app, shell } from "electron";
+import { BrowserWindow, Notification, app, autoUpdater, shell } from "electron";
 import started from "electron-squirrel-startup";
 
 import { autoLaunch } from "./native/autoLaunch";
@@ -39,8 +39,22 @@ const onNotifyUser = (_info: IUpdateInfo) => {
 };
 
 if (acquiredLock) {
-  // start auto update logic
-  updateElectronApp({ onNotifyUser });
+  // Auto-update requires a code-signed build on macOS (Squirrel.Mac).
+  // Skip silently when running unsigned or via App Translocation.
+  const isTranslocated = app.getAppPath().includes("AppTranslocation");
+  const skipUpdate = process.platform === "darwin" && isTranslocated;
+
+  // Suppress async errors from the autoUpdater (e.g. missing code signature
+  // on macOS) so they don't surface as uncaught exception dialogs.
+  autoUpdater.on("error", () => {});
+
+  if (!skipUpdate) {
+    try {
+      updateElectronApp({ onNotifyUser });
+    } catch {
+      // not code-signed or update server unreachable — ignore
+    }
+  }
 
   // create and configure the app when electron is ready
   app.on("ready", () => {
